@@ -22,6 +22,16 @@ public class SongContoller {
 	
 ArrayList<Song> songs;
 	
+		@FXML private ListView<Song> songs;
+	@FXML private Button deleteBtn;
+	@FXML private Button addBtn;
+	@FXML private Button editBtn;
+	
+	@FXML private TextField nameTxt;
+	@FXML private TextField artistTxt;
+	@FXML private TextField albumTxt;
+	@FXML private TextField yearTxt;
+	
 	private ObservableList<Song> songList= FXCollections.observableArrayList();
 	
 	@FXML ListView<Song> listView;
