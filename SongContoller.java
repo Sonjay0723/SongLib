@@ -20,7 +20,17 @@ import javafx.stage.Stage;
 
 public class SongContoller {
 	
-	private ObservableList<Song> songList= null;
+	@FXML private ListView<Song> songs;
+	@FXML private Button deleteBtn;
+	@FXML private Button addBtn;
+	@FXML private Button saveBtn;
+	
+	@FXML private TextField nameTxt;
+	@FXML private TextField artistTxt;
+	@FXML private TextField albumTxt;
+	@FXML private TextField yearTxt;
+	
+	ObservableList<Song> songList = FXCollections.observableArrayList();
 	
 	public boolean add(String name, String artist, String album, int year){
 		
