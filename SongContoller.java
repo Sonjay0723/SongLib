@@ -20,9 +20,12 @@ import javafx.stage.Stage;
 
 public class SongContoller {
 	
-ArrayList<Song> songs;
+	ArrayList<Song> songs;
 	
-		@FXML private ListView<Song> songs;
+	private ObservableList<Song> songList = FXCollections.observableArrayList();
+	
+	@FXML ListView<Song> listView;
+	
 	@FXML private Button deleteBtn;
 	@FXML private Button addBtn;
 	@FXML private Button editBtn;
@@ -32,10 +35,6 @@ ArrayList<Song> songs;
 	@FXML private TextField albumTxt;
 	@FXML private TextField yearTxt;
 	
-	private ObservableList<Song> songList= FXCollections.observableArrayList();
-	
-	@FXML ListView<Song> listView;
-	
 	
 	public void start(Stage primaryStage) {
         primaryStage.setTitle("Song List View");        
@@ -43,89 +42,98 @@ ArrayList<Song> songs;
         listView.setItems(songList);
         listView.getSelectionModel().select(0);
         
+        addBtn.setOnAction((event->{add(nameTxt.getText(), artistTxt.getText(), albumTxt.getText(), yearTxt.getText(), primaryStage);}));
+        
         //listView.setPrefSize(200, 250);
         //listView.setEditable(true);
 	}
 	
-	public void add(String name, String artist, String album, int year){
+	public void add(String name, String artist, String album, String year, Stage primaryStage){
 		
 		//Creating Song object
 		Song newSong = new Song(name,artist,album,year);
 		
 		//checking if fields are entered incorrectly
-		//TODO FXML pop up
-		if(name.isEmpty() && artist.isEmpty()) {
-			
-		}
-		if(name.isEmpty()) {
-			
-		}
-		if(artist.isEmpty()) {
-			
+		if(name.isEmpty() || artist.isEmpty()) {
+			popUpMessage(primaryStage, "The Name or Artist Fields are Empty!");	
+			nameTxt.clear();
+			artistTxt.clear();
+			albumTxt.clear();
+			yearTxt.clear();
+			return;
 		}
 			
-		if(songList == null) {
+		if(songList.isEmpty()) {
 			songList.add(newSong);
-			
+			//select song
+			listView.setItems(songList);
+			listView.getSelectionModel().select(0);
 		}
 		
-		else if (!inList(newSong)) {
+		//adding in appropriate location
+		else if (!inList(newSong, primaryStage)) {
 			for(int i=0; i<songList.size(); i++) {
-				if(songList.get(i).getName().compareTo(name) == 0) {
-					if(songList.get(i).getArtist().compareTo(artist)<0) {
-						if(i+1>=songList.size())
-							songList.add(newSong);
-						else
-							songList.add(i+1, newSong);
-						
-					}
-					else if(songList.get(i).getArtist().compareTo(artist)>0) {
-						songList.add(i, newSong);
-						
-					}
-				}
-				else if(songList.get(i).getName().compareTo(name) > 0) {
-					songList.add(i, newSong);
-					
-				}
-				else if (songList.get(i).getName().compareTo(name) < 0) {
-					if(i+1>=songList.size())
+				if(songList.get(i).compareTo(newSong) > 0) {
+					if(i+1>=songList.size()) {
 						songList.add(newSong);
-					else
+						//select song
+						listView.setItems(songList);
+						listView.getSelectionModel().select(songList.size()-1);
+					}
+					else {
 						songList.add(i+1, newSong);
-					
-					
+						//select song
+						listView.setItems(songList);
+						listView.getSelectionModel().select(i+1);
+					}
+				}
+				else if(songList.get(i).compareTo(newSong) < 0) {
+					continue;
 				}
 			}
-			
-			//TODO select added song at end
 		}
 		
-		
+		nameTxt.clear();
+		artistTxt.clear();
+		albumTxt.clear();
+		yearTxt.clear();
+		return;
 	}
 	
-	public void edit(Song currentSong) {
+	public void edit(Song currentSong, Stage primaryStage) {
 		
 		//TODO take in changes to current selected song
 		String name = "";
 		String artist = "";
-		int year = 0;
+		String year = "";
 		String album = "";
 		
-		if(!inList(currentSong)) {
+		if(!inList(currentSong, primaryStage)) {
 			//TODO update song
 		}
 		
 	}
 		
-	public boolean inList(Song search){
+	public boolean inList(Song search, Stage primaryStage){
 		for(int i=0; i<songList.size(); i++) {
 			if(songList.get(i).compareTo(search) == 0) {
-				//POP UP MESSAGE ALREADY EXISTS
+				popUpMessage(primaryStage, "This Entry Already Exists in the List!");
+				nameTxt.clear();
+				artistTxt.clear();
+				albumTxt.clear();
+				yearTxt.clear();
 				return false;
 			}
 		}
 		return true;
+	}
+	
+	public void popUpMessage(Stage primaryStage, String contentText) {
+		Alert warning = new Alert(AlertType.WARNING);
+		warning.initOwner(primaryStage);
+		warning.setTitle("We ran into an issue...");
+		warning.setHeaderText(contentText);
+		warning.showAndWait();
 	}
 	
 }
