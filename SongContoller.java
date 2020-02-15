@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-public class SongContoller {
+public class SongController {
 	
 	@FXML private ListView<Song> songs;
 	@FXML private Button deleteBtn;
