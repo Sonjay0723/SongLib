@@ -39,13 +39,7 @@ public class SongContoller {
 		
 		//checking if fields are entered incorrectly
 		//TODO FXML pop up
-		if(name.isEmpty() && artist.isEmpty()) {
-			return false;
-		}
-		if(name.isEmpty()) {
-			return false;
-		}
-		if(artist.isEmpty()) {
+		if(name.isEmpty() || artist.isEmpty()) {
 			return false;
 		}
 			
