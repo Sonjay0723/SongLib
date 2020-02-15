@@ -23,7 +23,7 @@ public class SongController {
 	@FXML private ListView<Song> songs;
 	@FXML private Button deleteBtn;
 	@FXML private Button addBtn;
-	@FXML private Button saveBtn;
+	@FXML private Button editBtn;
 	
 	@FXML private TextField nameTxt;
 	@FXML private TextField artistTxt;
@@ -83,7 +83,17 @@ public class SongController {
 		return false;
 	}
 	
-	
+	public void delete(String name, String artist) {
+		
+		Song temp = new Song(name, artist, "", 0);
+		
+		for (int i = 0; i < songList.size(); i++) {
+			if (songList.get(i).compareTo(temp) == 0) {
+				songList.remove(i);
+				return;
+			}
+		}
+	}
 		
 	public boolean inList(Song search){
 		for(int i=0; i<songList.size(); i++) {
