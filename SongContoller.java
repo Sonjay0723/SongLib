@@ -20,18 +20,75 @@ import javafx.stage.Stage;
 
 public class SongContoller {
 	
-	ObservableList<Song> songList= null;
+	private ObservableList<Song> songList= null;
 	
 	public boolean add(String name, String artist, String album, int year){
 		
 		//Creating Song object
 		Song newSong = new Song(name,artist,album,year);
 		
+		//checking if fields are entered incorrectly
+		//TODO FXML pop up
+		if(name.isEmpty() && artist.isEmpty()) {
+			return false;
+		}
+		if(name.isEmpty()) {
+			return false;
+		}
+		if(artist.isEmpty()) {
+			return false;
+		}
+			
 		if(songList == null) {
 			songList.add(newSong);
-		}
-		else if (songList.getName().compareTo(name)==) {
-			
+			return true;
 		}
 		
+		else if (!inList(newSong)) {
+			for(int i=0; i<songList.size(); i++) {
+				if(songList.get(i).getName().compareTo(name) == 0) {
+					if(songList.get(i).getArtist().compareTo(artist)<0) {
+						if(i+1>=songList.size())
+							songList.add(newSong);
+						else
+							songList.add(i+1, newSong);
+						return true;
+					}
+					else if(songList.get(i).getArtist().compareTo(artist)>0) {
+						songList.add(i, newSong);
+						return true;
+					}
+				}
+				else if(songList.get(i).getName().compareTo(name) > 0) {
+					songList.add(i, newSong);
+					return true;
+				}
+				else if (songList.get(i).getName().compareTo(name) < 0) {
+					if(i+1>=songList.size())
+						songList.add(newSong);
+					else
+						songList.add(i+1, newSong);
+					
+					return true;
+				}
+			}
 			
+			//TODO select added song at end
+		}
+		
+		return false;
+	}
+	
+	
+		
+	public boolean inList(Song search){
+		for(int i=0; i<songList.size(); i++) {
+			if(songList.get(i).compareTo(search) == 0) {
+				//POP UP MESSAGE
+				return false;
+			}
+		}
+		return true;
+	}
+	
+}
