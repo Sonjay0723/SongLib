@@ -43,21 +43,27 @@ public class SongContoller {
 		listView.getSelectionModel().select(0);
 
 		addBtn.setOnAction(event->{
-			add(nameTxt.getText(), artistTxt.getText(), albumTxt.getText(), yearTxt.getText(), primaryStage);
+			if(agreeOrDisagree(primaryStage, "Would you like to add this song to the playlist?"))
+				add(nameTxt.getText(), artistTxt.getText(), albumTxt.getText(), yearTxt.getText(), primaryStage);
 		});
 
 		editBtn.setOnAction(event->{
-			if (!songList.isEmpty()){
-				Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
-				edit(currSong,primaryStage);
+			if(agreeOrDisagree(primaryStage, "Would you like edit this song?")){
+				if (!songList.isEmpty()){
+					Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+					edit(currSong,primaryStage);
+				}
 			}
 		});
 		
 		deleteBtn.setOnAction(event->{
-			if (!songList.isEmpty()){
-				Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
-				remove(currSong);
+			if(agreeOrDisagree(primaryStage, "Would you like to remove this song from the playlist?")){
+				if (!songList.isEmpty()){
+					Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+					delete(currSong);
+				}
 			}
+		});
 	}
 	
 	public void add(String name, String artist, String album, String year, Stage primaryStage){
@@ -143,7 +149,7 @@ public class SongContoller {
 		return;
 	}
 	
-	public void remove(Song currentSong){
+	public void delete(Song currentSong){
 		
 		//delete current song
 		int currIndex = listView.getSelectionModel().getSelectedIndex();
@@ -164,7 +170,8 @@ public class SongContoller {
 		return;
 		
 	}
-		
+	
+	//method to check if same name+artist is already in songlist
 	public boolean inList(Song search, Stage primaryStage){
 		for(int i=0; i<songList.size(); i++) {
 			if(songList.get(i).compareTo(search) == 0) {
@@ -179,12 +186,31 @@ public class SongContoller {
 		return true;
 	}
 	
-	public void popUpMessage(Stage primaryStage, String contentText) {
+	//method for warning signature
+	public void popUpMessage(Stage primaryStage, String displayText) {
 		Alert warning = new Alert(AlertType.WARNING);
 		warning.initOwner(primaryStage);
 		warning.setTitle("We ran into an issue...");
-		warning.setHeaderText(contentText);
+		warning.setHeaderText(displayText);
 		warning.showAndWait();
+	}
+	
+	//method to allow user to back out of decision
+	public boolean agreeOrDisagree(Stage primaryStage, String displayText) {
+		Alert sayYes = new Alert(AlertType.CONFIRMATION);
+		confirmation.initOwner(primaryStage);
+		confirmation.setContentText(displayText);
+		
+		ButtonType yesButton = new ButtonType("Continue");
+		ButtonType noButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+		
+		confirmation.getButtonTypes().setAll(yesButton, cancelButton);
+		
+		Optional<ButtonType> result = confirmation.showAndWait();
+		if (result.get() == yesButton)  {
+			return true;
+		}
+		return false;
 	}
 	
 }
