@@ -47,9 +47,17 @@ public class SongContoller {
 		});
 
 		editBtn.setOnAction(event->{
-			Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
-			edit(currSong,primaryStage);
+			if (!songList.isEmpty()){
+				Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+				edit(currSong,primaryStage);
+			}
 		});
+		
+		deleteBtn.setOnAction(event->{
+			if (!songList.isEmpty()){
+				Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+				remove(currSong);
+			}
 	}
 	
 	public void add(String name, String artist, String album, String year, Stage primaryStage){
@@ -105,30 +113,56 @@ public class SongContoller {
 	}
 	
 	public void edit(Song currentSong, Stage primaryStage) {
-		
-		if(!inList(currentSong, primaryStage)) {
-			String name,artist,album,year;
-			if(!nameTxt.getText().isEmpty())
-				name = nameTxt.getText();
-			else
-				name = currentSong.getName();
-			if(!artistTxt.getText().isEmpty())
-				artist = artistTxt.getText();
-			else
-				artist = currentSong.getArtist();
-			if(!albumTxt.getText().isEmpty())
-				album = albumTxt.getText();
-			else
-				album = currentSong.getAlbum();
-			if(!yearTxt.getText().isEmpty())
-				year = yearTxt.getText();
-			else
-				year = currentSong.getYear();
 			
+		//find out which ites to edit
+		String name,artist,album,year;
+		if(!nameTxt.getText().isEmpty())
+			name = nameTxt.getText();
+		else
+			name = currentSong.getName();
+		if(!artistTxt.getText().isEmpty())
+			artist = artistTxt.getText();
+		else
+			artist = currentSong.getArtist();
+		if(!albumTxt.getText().isEmpty())
+			album = albumTxt.getText();
+		else
+			album = currentSong.getAlbum();
+		if(!yearTxt.getText().isEmpty())
+			year = yearTxt.getText();
+		else
+			year = currentSong.getYear();
+
+		//add edited version after removing un-edited version
+		Song newSong = new Song(name,artist,album,year);
+		if(!inList(newSong, primaryStage){
 			delete(currentSong);
 			add(name,artist,album,year,primaryStage);
 		}
+		   
 		return;
+	}
+	
+	public void remove(Song currentSong){
+		
+		//delete current song
+		int currIndex = listView.getSelectionModel().getSelectedIndex();
+		songList.remove(currIndex);
+		listView.setItems(songList);
+		
+		//select next song in List
+		if(songs.size() <= currIndex)
+			listView.getSelectionModel().select(currIndex-1);
+		else 
+			listView.getSelectionModel().select(selectIndex);
+		
+		//clear text
+		nameTxt.clear();
+		artistTxt.clear();
+		albumTxt.clear();
+		yearTxt.clear();
+		return;
+		
 	}
 		
 	public boolean inList(Song search, Stage primaryStage){
