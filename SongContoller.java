@@ -37,15 +37,19 @@ public class SongContoller {
 	
 	
 	public void start(Stage primaryStage) {
-        primaryStage.setTitle("Song List View");        
-        
-        listView.setItems(songList);
-        listView.getSelectionModel().select(0);
-        
-        addBtn.setOnAction((event->{add(nameTxt.getText(), artistTxt.getText(), albumTxt.getText(), yearTxt.getText(), primaryStage);}));
-        
-        //listView.setPrefSize(200, 250);
-        //listView.setEditable(true);
+		primaryStage.setTitle("Song List View");        
+
+		listView.setItems(songList);
+		listView.getSelectionModel().select(0);
+
+		addBtn.setOnAction(event->{
+			add(nameTxt.getText(), artistTxt.getText(), albumTxt.getText(), yearTxt.getText(), primaryStage);
+		});
+
+		editBtn.setOnAction(event->{
+			Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+			edit(currSong,primaryStage);
+		});
 	}
 	
 	public void add(String name, String artist, String album, String year, Stage primaryStage){
@@ -102,16 +106,29 @@ public class SongContoller {
 	
 	public void edit(Song currentSong, Stage primaryStage) {
 		
-		//TODO take in changes to current selected song
-		String name = "";
-		String artist = "";
-		String year = "";
-		String album = "";
-		
 		if(!inList(currentSong, primaryStage)) {
-			//TODO update song
+			String name,artist,album,year;
+			if(!nameTxt.getText().isEmpty())
+				name = nameTxt.getText();
+			else
+				name = currentSong.getName();
+			if(!artistTxt.getText().isEmpty())
+				artist = artistTxt.getText();
+			else
+				artist = currentSong.getArtist();
+			if(!albumTxt.getText().isEmpty())
+				album = albumTxt.getText();
+			else
+				album = currentSong.getAlbum();
+			if(!yearTxt.getText().isEmpty())
+				year = yearTxt.getText();
+			else
+				year = currentSong.getYear();
+			
+			delete(currentSong);
+			add(name,artist,album,year,primaryStage);
 		}
-		
+		return;
 	}
 		
 	public boolean inList(Song search, Stage primaryStage){
