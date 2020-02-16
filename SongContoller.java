@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 
 public class SongContoller {
 	
-	ArrayList<Song> songs;
-	
 	private ObservableList<Song> songList = FXCollections.observableArrayList();
 	
 	@FXML ListView<Song> listView;
@@ -157,7 +155,7 @@ public class SongContoller {
 		listView.setItems(songList);
 		
 		//select next song in List
-		if(songs.size() <= currIndex)
+		if(songList.size() <= currIndex)
 			listView.getSelectionModel().select(currIndex-1);
 		else 
 			listView.getSelectionModel().select(selectIndex);
