@@ -38,7 +38,8 @@ public class SongContoller {
 		primaryStage.setTitle("Song List View");        
 
 		listView.setItems(songList);
-		listView.getSelectionModel().select(0);
+                if(!songList.isEmpty())
+		        listView.getSelectionModel().select(0);
 
 		addBtn.setOnAction(event->{
 			if(agreeOrDisagree(primaryStage, "Would you like to add this song to the playlist?"))
