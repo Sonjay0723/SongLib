@@ -178,10 +178,10 @@ public class SongContoller {
 				artistTxt.clear();
 				albumTxt.clear();
 				yearTxt.clear();
-				return false;
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	//method for warning signature
