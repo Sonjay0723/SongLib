@@ -1,13 +1,12 @@
-package Library;
+package application;
 
 public class Song {
-	
 	private String name;
 	private String artist;
 	private String album;
-	private int year;
+	private String year;
 	
-	public Song(String name, String artist, String album, int year) {
+	public Song(String name, String artist, String album, String year) {
 		this.name = name;
 		this.artist = artist;
 		this.album = album;
@@ -26,7 +25,7 @@ public class Song {
 		return album;
 	}
 	
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 	
@@ -42,7 +41,7 @@ public class Song {
 		this.album = x;
 	}
 	
-	public void setYear(int x) {
+	public void setYear(String x) {
 		this.year = x;
 	}
 	
