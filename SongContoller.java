@@ -1,9 +1,9 @@
-package display;
+package Display;
 
 import java.io.*;
 import java.util.*;
 
-import Library.Song;
+import application.Song;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-public class SongContoller {
+public class SongController {
 	
 	private ObservableList<Song> songList = FXCollections.observableArrayList();
 	
@@ -49,7 +49,7 @@ public class SongContoller {
 		editBtn.setOnAction(event->{
 			if(agreeOrDisagree(primaryStage, "Would you like edit this song?")){
 				if (!songList.isEmpty()){
-					Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+					Song currSong = songList.get((listView.getSelectionModel().getSelectedIndex()));
 					edit(currSong,primaryStage);
 				}
 			}
@@ -58,7 +58,7 @@ public class SongContoller {
 		deleteBtn.setOnAction(event->{
 			if(agreeOrDisagree(primaryStage, "Would you like to remove this song from the playlist?")){
 				if (!songList.isEmpty()){
-					Song currSong = songList(listView.getSelectionModel().getSelectedIndex());
+					Song currSong = songList.get((listView.getSelectionModel().getSelectedIndex()));
 					delete(currSong);
 				}
 			}
@@ -140,7 +140,7 @@ public class SongContoller {
 
 		//add edited version after removing un-edited version
 		Song newSong = new Song(name,artist,album,year);
-		if(!inList(newSong, primaryStage){
+		if(!inList(newSong, primaryStage)){
 			delete(currentSong);
 			add(name,artist,album,year,primaryStage);
 		}
@@ -159,7 +159,7 @@ public class SongContoller {
 		if(songList.size() <= currIndex)
 			listView.getSelectionModel().select(currIndex-1);
 		else 
-			listView.getSelectionModel().select(selectIndex);
+			listView.getSelectionModel().select(currIndex);
 		
 		//clear text
 		nameTxt.clear();
@@ -170,7 +170,7 @@ public class SongContoller {
 		
 	}
 	
-	//method to check if same name+artist is already in songlist
+	//method to check if same name+artist is already in songList
 	public boolean inList(Song search, Stage primaryStage){
 		for(int i=0; i<songList.size(); i++) {
 			if(songList.get(i).compareTo(search) == 0) {
@@ -197,15 +197,15 @@ public class SongContoller {
 	//method to allow user to back out of decision
 	public boolean agreeOrDisagree(Stage primaryStage, String displayText) {
 		Alert sayYes = new Alert(AlertType.CONFIRMATION);
-		confirmation.initOwner(primaryStage);
-		confirmation.setContentText(displayText);
+		sayYes.initOwner(primaryStage);
+		sayYes.setContentText(displayText);
 		
 		ButtonType yesButton = new ButtonType("Continue");
 		ButtonType noButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 		
-		confirmation.getButtonTypes().setAll(yesButton, cancelButton);
+		sayYes.getButtonTypes().setAll(yesButton, noButton);
 		
-		Optional<ButtonType> result = confirmation.showAndWait();
+		Optional<ButtonType> result = sayYes.showAndWait();
 		if (result.get() == yesButton)  {
 			return true;
 		}
