@@ -49,6 +49,15 @@ public class Song {
 		return (this.name + " - " + this.artist);
 	}
 	
+	public String toText() {
+		String res = this.getName() + "\n";
+		res += this.getArtist() + "\n";
+		res += this.getAlbum() + "\n";
+		res += this.getYear() +"\n";
+		
+		return res;
+	}
+	
 	public int compareTo(Song x) {
 		int a = this.name.toLowerCase().compareTo(x.name.toLowerCase());
 		
