@@ -47,19 +47,27 @@ public class SongController {
 		addBtn.setOnAction(event->{
 			if(agreeOrDisagree(primaryStage, "Would you like to add this song to the playlist?"))
 				add(nameTxt.getText(), artistTxt.getText(), albumTxt.getText(), yearTxt.getText(), primaryStage);
+			else
+				whatInfo();
 		});
 
 		editBtn.setOnAction(event->{
-			if(agreeOrDisagree(primaryStage, "Would you like edit this song?")){
+			if(songList.isEmpty()) 
+				popUpMessage(primaryStage, "There is nothing selected to edit!");
+			else if(agreeOrDisagree(primaryStage, "Would you like edit this song?")){
 				if (!songList.isEmpty()){
 					Song currSong = songList.get((listView.getSelectionModel().getSelectedIndex()));
 					edit(currSong,primaryStage);
 				}
 			}
+			else
+				whatInfo();
 		});
 		
 		deleteBtn.setOnAction(event->{
-			if(agreeOrDisagree(primaryStage, "Would you like to remove this song from the playlist?")){
+			if(songList.isEmpty()) 
+				popUpMessage(primaryStage, "There is nothing selected to delete!");
+			else if(agreeOrDisagree(primaryStage, "Would you like to remove this song from the playlist?")){
 				if (!songList.isEmpty()){
 					Song currSong = songList.get((listView.getSelectionModel().getSelectedIndex()));
 					delete(currSong);
@@ -161,7 +169,7 @@ public class SongController {
 		//if the newSong does not exist in the playlist, add it to the playlist, otherwise add the original song back in
 		if(currName.compareTo(name)==0 && currArtist.compareTo(artist)==0 && currAlbum.compareTo(album)==0 && currYear.compareTo(year)==0) {
 			add(currName,currArtist,currAlbum,currYear,primaryStage);
-			popUpMessage(primaryStage,"This song has not been edited!");
+			popUpMessage(primaryStage,"This information for this song has not been edited!");
 			return;
 		}
 		
