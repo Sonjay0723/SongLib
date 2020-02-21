@@ -422,4 +422,31 @@ public class SongController {
 		return false;
 	}
 	
+	private void write(ArrayList<Song> songs, File fp) throws IOException {
+		if (fp.delete()) {
+			fp.createNewFile();
+		}
+		
+		PrintWriter  w1 = new PrintWriter(fp);
+		for (int i = 0; i < songs.size(); i++) {
+			String str = songs.get(i).toText();
+			w1.write(str);
+		}
+		w1.close();
+	}
+	
+	private ArrayList<Song> read(File fp) throws FileNotFoundException, IOException, ClassNotFoundException {
+		Scanner r1 = new Scanner(fp);
+		ArrayList<Song> res = new ArrayList<Song>();
+		
+		while (r1.hasNextLine()) {
+			String name = r1.nextLine();
+			String artist = r1.nextLine();
+			String album = r1.nextLine();
+			String year = r1.nextLine();
+			
+			res.add(new Song(name, artist, album, year));
+		}
+		return res;
+	}
 }
