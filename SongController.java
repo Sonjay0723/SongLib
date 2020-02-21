@@ -176,10 +176,8 @@ public class SongController {
 		
 		else if(!inList(newSong, primaryStage))
 			add(name,artist,album,year,primaryStage);
-		else{
+		else
 			add(currName,currArtist,currAlbum,currYear,primaryStage);
-		        whatInfo();
-                }
 		return;
 	}
 	
