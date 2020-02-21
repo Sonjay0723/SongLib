@@ -159,7 +159,7 @@ public class SongController {
 		delete(currentSong);
 		
 		//if the newSong does not exist in the playlist, add it to the playlist, otherwise add the original song back in
-		if(!inList(newSong,primaryStage) && currAlbum.compareTo(album)==0 && currYear.compareTo(year)==0) {
+		if(currName.compareTo(name)==0 && currArtist.compareTo(artist)==0 && currAlbum.compareTo(album)==0 && currYear.compareTo(year)==0) {
 			add(currName,currArtist,currAlbum,currYear,primaryStage);
 			popUpMessage(primaryStage,"This song has not been edited!");
 			return;
