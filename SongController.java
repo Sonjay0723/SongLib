@@ -159,6 +159,7 @@ public class SongController {
 		//check if important fields are now empty
 		if(name.isBlank()|| artist.isBlank()) {
 			popUpMessage(primaryStage, "Name or Artist is Blank");
+                        whatInfo();
 			return;
 		}
 		
@@ -169,15 +170,16 @@ public class SongController {
 		//if the newSong does not exist in the playlist, add it to the playlist, otherwise add the original song back in
 		if(currName.compareTo(name)==0 && currArtist.compareTo(artist)==0 && currAlbum.compareTo(album)==0 && currYear.compareTo(year)==0) {
 			add(currName,currArtist,currAlbum,currYear,primaryStage);
-			popUpMessage(primaryStage,"This information for this song has not been edited!");
+			popUpMessage(primaryStage,"The information for this song has not been edited!");
 			return;
 		}
 		
 		else if(!inList(newSong, primaryStage))
 			add(name,artist,album,year,primaryStage);
-		else
+		else{
 			add(currName,currArtist,currAlbum,currYear,primaryStage);
-		
+		        whatInfo();
+                }
 		return;
 	}
 	
