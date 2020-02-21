@@ -1,3 +1,4 @@
+//Dhrishti Hazari and Jayson Pitta
 package application;
 	
 import javafx.application.Application;
@@ -19,7 +20,7 @@ public class SongLib extends Application {
 			SongController libraryController = loader.getController();
 			libraryController.start(primaryStage);
 			
-			Scene scene = new Scene(root,450,425);
+			Scene scene = new Scene(root);
 			primaryStage.setScene(scene);
 			primaryStage.setTitle("Song List View");
 			primaryStage.setResizable(false);  
