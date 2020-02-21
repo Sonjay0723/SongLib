@@ -1,3 +1,5 @@
+package Display;
+
 import java.util.*;
 
 import application.Song;
@@ -136,24 +138,17 @@ public class SongController {
 			
 		//find out which entries to edit
 		String name,artist,album,year;
-		//if(!nameTxt.getText().isEmpty())
-			name = nameTxt.getText();
-		//else
-			//name = currentSong.getName();
-		//if(!artistTxt.getText().isEmpty())
-			artist = artistTxt.getText();
-		//else
-			//artist = currentSong.getArtist();
-		//if(!albumTxt.getText().isEmpty())
-			album = albumTxt.getText();
-		//else
-			//album = currentSong.getAlbum();
-		//if(!yearTxt.getText().isEmpty())
-			year = yearTxt.getText();
-		//else
-			//year = currentSong.getYear();
+		String currName,currArtist,currAlbum,currYear;
+		name = nameTxt.getText();
+		currName = currentSong.getName();
+		artist = artistTxt.getText();
+		currArtist = currentSong.getArtist();
+		album = albumTxt.getText();
+		currAlbum = currentSong.getAlbum();
+		year = yearTxt.getText();
+		currYear = currentSong.getYear();
 
-		//add edited version after removing un-edited version
+		//check if important fields are now empty
 		if(name.isBlank()|| artist.isBlank()) {
 			popUpMessage(primaryStage, "Name or Artist is Blank");
 			return;
@@ -164,11 +159,17 @@ public class SongController {
 		delete(currentSong);
 		
 		//if the newSong does not exist in the playlist, add it to the playlist, otherwise add the original song back in
-		if(!inList(newSong, primaryStage))
+		if(!inList(newSong,primaryStage) && currAlbum.compareTo(album)==0 && currYear.compareTo(year)==0) {
+			add(currName,currArtist,currAlbum,currYear,primaryStage);
+			popUpMessage(primaryStage,"This song has not been edited!");
+			return;
+		}
+		
+		else if(!inList(newSong, primaryStage))
 			add(name,artist,album,year,primaryStage);
 		else
-			add(currentSong.getName(),currentSong.getArtist(),currentSong.getAlbum(),currentSong.getYear(),primaryStage);
-		   
+			add(currName,currArtist,currAlbum,currYear,primaryStage);
+		
 		return;
 	}
 	
@@ -179,7 +180,7 @@ public class SongController {
 		songList.remove(currIndex);
 		listView.setItems(songList);
 		
-		//select next song in List
+		//select next song in List or clear text fields if list is empty
 		if(!songList.isEmpty()) {
 			if(songList.size() <= currIndex) {
 				listView.getSelectionModel().select(currIndex-1);
@@ -202,6 +203,8 @@ public class SongController {
 	
 	//method to check if same name+artist is already in songList
 	public boolean inList(Song search, Stage primaryStage){
+		if(songList.isEmpty())
+			return false;
 		for(int i=0; i<songList.size(); i++) {
 			if(songList.get(i).compareTo(search) == 0) {
 				popUpMessage(primaryStage, "This Entry Already Exists in the List!");
